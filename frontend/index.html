@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PasswordLab · Password Strength & Combinatorics Analyzer</title>
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="shell">
+<aside class="side">
+  <div class="brand">
+    <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="8" fill="none" stroke="var(--violet)" stroke-width="2"/><path d="M9 20l4-8 3 6 2-4 5 6" fill="none" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div><strong>PasswordLab</strong><span>Password Strength &amp; Combinatorics Analyzer</span></div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <a href="#analyzer"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Analyzer</a>
+    <a href="#lab"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V3"/></svg>Combinatorics Lab</a>
+    <a href="#compare"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Password Comparison</a>
+    <a href="#learn"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM4 21V5"/></svg>Learn the Mathematics</a>
+  </nav>
+  <p class="privacy">Passwords you type stay in this browser tab. Only length and character-set flags are sent to the local Python server. Nothing is stored or logged.</p>
+</aside>
+
+<main id="main" tabindex="-1">
+
+<!-- ============ ANALYZER ============ -->
+<section id="analyzer" class="view" aria-labelledby="h-an">
+  <header class="head"><h1 id="h-an">Analyzer</h1><p>Inspect a password in your browser. The Python engine computes the search-space maths from derived metrics only.</p></header>
+  <div class="card">
+    <label for="pw">Password to analyze</label>
+    <div class="pwrow">
+      <input id="pw" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="256" placeholder="Type or paste a password" aria-describedby="pw-count">
+      <button class="btn" id="pw-toggle" type="button" aria-pressed="false">Show</button>
+      <button class="btn" id="pw-copy" type="button">Copy</button>
+    </div>
+    <div class="row between"><small id="pw-count" aria-live="polite">0 characters</small><small id="pw-copied" aria-live="polite"></small></div>
+    <div id="an-rate" class="rate"></div>
+  </div>
+  <div id="an-empty" class="empty card"><h2>Nothing to analyze yet</h2><p>Enter a password above. Try <code>Tr0ub4dor&amp;3</code> and <code>correct horse battery staple</code> to see how pattern warnings and length change the result.</p></div>
+  <div id="an-out" hidden>
+    <div class="card hero">
+      <div class="verdict"><span id="an-label" class="verdict-label">–</span><span class="muted" id="an-basis"></span></div>
+      <div class="meter" id="an-meter" role="img" aria-label="Strength meter"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="twin">
+        <div><span class="big mono" id="an-h">–</span><span class="muted">bits, theoretical entropy of a uniformly random password with this length and pool</span></div>
+        <div><span class="big mono" id="an-eff">–</span><span class="muted">bits, heuristic estimate after pattern penalties (rough, not a measurement)</span></div>
+      </div>
+      <div id="an-chips" class="chips"></div>
+    </div>
+    <div id="an-metrics"></div>
+    <div class="grid2">
+      <div class="card"><h2>Warnings</h2><ul id="an-warn" class="list"></ul></div>
+      <div class="card"><h2>Suggestions</h2><ul id="an-sug" class="list"></ul></div>
+    </div>
+    <div class="note card"><strong>How to read this.</strong> Having several character types raises the <em>theoretical</em> pool size, but it does not make a password strong. Real attackers try dictionary words, keyboard patterns and leaked passwords first. The heuristic estimate subtracts bits for patterns this page can recognise; it is a teaching aid and ignores anything it does not know about (for example, a password that is already in a breach list). Its thresholds (28, 36, 60 and 80 bits) are conventional rules of thumb, not scientific limits.</div>
+  </div>
+  <div id="an-err" role="alert"></div>
+</section>
+
+<!-- ============ LAB ============ -->
+<section id="lab" class="view" aria-labelledby="h-lab" hidden>
+  <header class="head"><h1 id="h-lab">Combinatorics Lab</h1><p>Configure a password format, then see its character pool, search space, entropy, constrained counts and guessing-time estimates.</p></header>
+  <div class="lab-grid">
+    <div class="card"><h2>Configuration</h2><div id="lab-form"></div><div id="lab-rate" class="rate"></div></div>
+    <div id="lab-out" class="stack"></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h2>Search space vs length</h2><p class="muted small">Vertical axis is log10(N), so a straight line means exponential growth.</p><div class="chart"><canvas id="ch-space" role="img" aria-label="Chart of log10 search space against length"></canvas></div></div>
+    <div class="card"><h2>Entropy vs length</h2><p class="muted small">Each pool is cumulative: adding a category raises the slope log2(R).</p><div class="chart"><canvas id="ch-ent" role="img" aria-label="Chart of entropy against length"></canvas></div></div>
+  </div>
+  <div class="card"><h2>Effect of adding a character category</h2><p class="muted small" id="lab-cat-sub"></p><div class="chart short"><canvas id="ch-cat" role="img" aria-label="Bar chart of entropy per pool at the chosen length"></canvas></div></div>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section id="compare" class="view" aria-labelledby="h-cmp" hidden>
+  <header class="head"><h1 id="h-cmp">Password Comparison</h1><p>Compare two generated-password formats. No real passwords are needed.</p></header>
+  <div class="row wrap presets" id="cmp-presets"></div>
+  <div class="grid2">
+    <div class="card"><h2>Configuration A</h2><div id="cmp-a"></div></div>
+    <div class="card"><h2>Configuration B</h2><div id="cmp-b"></div></div>
+  </div>
+  <div id="cmp-rate" class="rate card"></div>
+  <div id="cmp-out" class="stack"></div>
+</section>
+
+<!-- ============ LEARN ============ -->
+<section id="learn" class="view" aria-labelledby="h-learn" hidden>
+  <header class="head"><h1 id="h-learn">Learn the Mathematics</h1><p>Six ideas from Discrete Mathematics, each wired to a live calculation by the Python engine.</p></header>
+  <div id="learn-body"></div>
+</section>
+
+</main>
+</div>
+<script src="vendor/chart.umd.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
