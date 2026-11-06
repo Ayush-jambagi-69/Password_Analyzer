@@ -4,31 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PasswordLab · Password Strength & Combinatorics Analyzer</title>
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<div class="shell">
-<aside class="side">
+<header class="top">
   <div class="brand">
-    <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="8" fill="none" stroke="var(--violet)" stroke-width="2"/><path d="M9 20l4-8 3 6 2-4 5 6" fill="none" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <div><strong>PasswordLab</strong><span>Password Strength &amp; Combinatorics Analyzer</span></div>
+    <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect x="3" y="3" width="32" height="32" rx="6" fill="#ffd84a" stroke="#1c1b18" stroke-width="2.4"/><path d="M10 25l5-10 4 7 3-5 6 8" fill="none" stroke="#d9411e" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div><strong>PasswordLab</strong><span>Strength &amp; Combinatorics</span></div>
   </div>
   <nav id="nav" aria-label="Sections">
-    <a href="#analyzer"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Analyzer</a>
-    <a href="#lab"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V3"/></svg>Combinatorics Lab</a>
-    <a href="#compare"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Password Comparison</a>
-    <a href="#learn"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM4 21V5"/></svg>Learn the Mathematics</a>
+    <a href="#analyzer"><b>01</b>Analyzer</a>
+    <a href="#suggest"><b>02</b>Suggestions</a>
+    <a href="#lab"><b>03</b>Combinatorics Lab</a>
+    <a href="#compare"><b>04</b>Comparison</a>
+    <a href="#learn"><b>05</b>Learn the Maths</a>
   </nav>
-  <p class="privacy">Passwords you type stay in this browser tab. Only length and character-set flags are sent to the local Python server. Nothing is stored or logged.</p>
-</aside>
-
+</header>
+<div class="shell">
 <main id="main" tabindex="-1">
 
 <!-- ============ ANALYZER ============ -->
 <section id="analyzer" class="view" aria-labelledby="h-an">
-  <header class="head"><h1 id="h-an">Analyzer</h1><p>Inspect a password in your browser. The Python engine computes the search-space maths from derived metrics only.</p></header>
+  <header class="head"><span class="kicker">No. 01 · Analyzer</span><h1 id="h-an">Analyzer</h1><p>Inspect a password in your browser. The Python engine computes the search-space maths from derived metrics only.</p></header>
   <div class="card">
     <label for="pw">Password to analyze</label>
     <div class="pwrow">
@@ -60,9 +59,38 @@
   <div id="an-err" role="alert"></div>
 </section>
 
+<!-- ============ SUGGESTIONS ============ -->
+<section id="suggest" class="view" aria-labelledby="h-sug" hidden>
+  <header class="head"><span class="kicker">No. 02 · Suggestions</span><h1 id="h-sug">Suggestions</h1><p>Type a password and get stronger versions at every level: an upgrade of your own, plus brand-new random ones. Everything is generated in your browser.</p></header>
+  <div class="card">
+    <label for="sg-pw">Your password</label>
+    <div class="pwrow"><input id="sg-pw" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="256" placeholder="Type or paste a password"><button class="btn" id="sg-toggle" type="button" aria-pressed="false">Show</button></div>
+    <div id="sg-now"></div>
+  </div>
+  <div id="sg-empty" class="empty card"><h2>Nothing to improve yet</h2><p>Enter a password above. You will get three levels of suggestions: <b>Moderate</b>, <b>Strong</b> and <b>Very Strong</b>.</p></div>
+  <div id="sg-out" hidden>
+    <div class="row between wrap" style="margin-bottom:14px"><h2 style="margin:0">Pick a level</h2><span class="row"><small id="sg-copied" aria-live="polite"></small><button class="btn" id="sg-regen" type="button">New suggestions</button></span></div>
+    <div id="sg-tiers"></div>
+    <div class="note card"><strong>Good to know.</strong> "Your password, upgraded" keeps what you remember and adds random words, so only the added part is truly random. Its strength is an estimate: if your starting password is a common word, prefer a fully random option. Random options are drawn with your browser's secure random generator, and each bit counted is exact for those. Never reuse one password on several sites, and a password manager is the easiest place to keep them.</div>
+  </div>
+  <div id="sg-err" role="alert"></div>
+</section>
+
 <!-- ============ LAB ============ -->
 <section id="lab" class="view" aria-labelledby="h-lab" hidden>
-  <header class="head"><h1 id="h-lab">Combinatorics Lab</h1><p>Configure a password format, then see its character pool, search space, entropy, constrained counts and guessing-time estimates.</p></header>
+  <header class="head"><span class="kicker">No. 03 · Combinatorics Lab</span><h1 id="h-lab">Combinatorics Lab</h1><p>Configure a password format, then see its character pool, search space, entropy, constrained counts and guessing-time estimates.</p></header>
+  <details class="guide" open><summary>New here? How to use this page <span class="chip">2 min read</span></summary><div class="guide-body">
+  <p><b>What this page does:</b> you describe a <i>kind</i> of password (how long, which characters) and it counts how many different passwords of that kind exist, and how long a computer would need to try them all. You never type a real password here.</p>
+  <ol class="how">
+    <li><b>Choose a format</b> on the left: a length and which character types are allowed.</li>
+    <li><b>Read "In plain words"</b> on the right, then the numbers below it. They update as you change anything.</li>
+    <li><b>Watch the charts.</b> They show what happens if the password were longer, or if more character types were allowed.</li>
+    <li><b>Optional rules:</b> tick "require at least one" to count only passwords that follow a site's rule, such as "must contain a digit".</li>
+  </ol>
+  <div class="gloss" data-gloss></div>
+  <div class="row wrap"><b class="small">Try an example:</b><span id="lab-ex" class="row wrap"></span></div>
+  <p class="plain" id="lab-ex-note" hidden></p>
+</div></details>
   <div class="lab-grid">
     <div class="card"><h2>Configuration</h2><div id="lab-form"></div><div id="lab-rate" class="rate"></div></div>
     <div id="lab-out" class="stack"></div>
@@ -76,7 +104,17 @@
 
 <!-- ============ COMPARE ============ -->
 <section id="compare" class="view" aria-labelledby="h-cmp" hidden>
-  <header class="head"><h1 id="h-cmp">Password Comparison</h1><p>Compare two generated-password formats. No real passwords are needed.</p></header>
+  <header class="head"><span class="kicker">No. 04 · Comparison</span><h1 id="h-cmp">Password Comparison</h1><p>Compare two generated-password formats. No real passwords are needed.</p></header>
+  <details class="guide" open><summary>New here? How to use this page <span class="chip">1 min read</span></summary><div class="guide-body">
+  <p><b>What this page does:</b> it puts two password formats side by side so you can see which one is harder to guess, and <i>why</i>: because it is longer, or because it allows more kinds of characters.</p>
+  <ol class="how">
+    <li><b>Press a quick example</b> below (for example "8 lowercase vs 12 lowercase"), or set Configuration A and B yourself.</li>
+    <li><b>Read the table:</b> a higher entropy (bits) and a bigger search space mean harder to guess by brute force.</li>
+    <li><b>Read "What changed":</b> it splits the difference into a length part and a character-types part.</li>
+  </ol>
+  <div class="gloss" data-gloss></div>
+</div></details>
+  <p class="small" style="margin:0 0 8px"><b>Quick examples:</b> one click fills in both configurations.</p>
   <div class="row wrap presets" id="cmp-presets"></div>
   <div class="grid2">
     <div class="card"><h2>Configuration A</h2><div id="cmp-a"></div></div>
@@ -88,12 +126,13 @@
 
 <!-- ============ LEARN ============ -->
 <section id="learn" class="view" aria-labelledby="h-learn" hidden>
-  <header class="head"><h1 id="h-learn">Learn the Mathematics</h1><p>Six ideas from Discrete Mathematics, each wired to a live calculation by the Python engine.</p></header>
+  <header class="head"><span class="kicker">No. 05 · The Mathematics</span><h1 id="h-learn">Learn the Mathematics</h1><p>Six ideas from Discrete Mathematics, each wired to a live calculation by the Python engine.</p></header>
   <div id="learn-body"></div>
 </section>
 
 </main>
 </div>
+<footer class="foot">Passwords you type stay in this browser tab. Only length and character-set flags go to the local Python server. Nothing is stored or logged.</footer>
 <script src="vendor/chart.umd.js"></script>
 <script src="app.js"></script>
 </body>

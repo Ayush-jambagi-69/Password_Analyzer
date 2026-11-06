@@ -17,6 +17,13 @@ python backend\app.py
 ```
 Open <http://127.0.0.1:5000>. Another port: `python backend\app.py 5001`.
 
+## Pages
+1. **Analyzer**: rates a password you type and explains why.
+2. **Suggestions**: type a password and get Moderate, Strong and Very Strong options: your password upgraded with random words, fully random characters, and a random word passphrase. Generated in the browser with `crypto.getRandomValues`; only length and character-type flags are sent to the server.
+3. **Combinatorics Lab**: describe a password format and see its pool, search space, entropy and guessing time. Has a how-to guide, glossary, one-click examples and an "In plain words" summary.
+4. **Comparison**: two formats side by side, with a guide and a plain "Bottom line".
+5. **Learn the Maths**: six topics with live examples.
+
 ## Project structure
 ```
 PasswordLab/

@@ -200,6 +200,14 @@ class FrontendContract(unittest.TestCase):
         e = self.c.post("/api/analyze-config", json={"length": 0, "lower": True}).get_json()
         self.assertEqual((e["ok"], isinstance(e["errors"], list)), (False, True))
 
+    def test_suggestions_and_guides_present(self):
+        with open(os.path.join(ROOT, "frontend", "index.html"), encoding="utf-8") as f:
+            html = f.read()
+        for needle in ('id="suggest"', 'href="#suggest"', 'id="sg-pw"', 'class="guide"', 'data-gloss'):
+            self.assertIn(needle, html)
+        self.assertIn("'suggest'", self.js)
+        self.assertIn("getRandomValues", self.js)      # secure randomness for generated passwords
+
     def test_frontend_has_no_quiz_or_cpp_references(self):
         with open(os.path.join(ROOT, "frontend", "index.html"), encoding="utf-8") as f:
             html = (f.read() + self.js).lower()
